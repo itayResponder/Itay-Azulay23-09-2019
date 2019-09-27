@@ -91,11 +91,11 @@ export default {
         },
 
         async setWather({commit}, {result}) {
-            const weather = result.data
-            console.log('setWEather:', weather)
-            storageService.saveToStorage("currWather", weather);
-            commit({type: 'setWather', weather})
-            return weather;
+            // const weather = result.data
+            console.log('store: weather', result)
+            storageService.saveToStorage("currWather", result);
+            commit({type: 'setWather', result})
+            return result;
         },
 
         async getWeatherCityByCode({commit}, {cityCode}) {

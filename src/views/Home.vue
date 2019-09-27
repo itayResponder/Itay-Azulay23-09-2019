@@ -48,7 +48,6 @@ export default {
     return {
       search: '',
       data: [],
-      weatherByLoc: storageService.loadFromStorage("weatherByLoc"),
       weather: null,
       selectedCity: '',
       weatherForecasts: [],
@@ -66,7 +65,7 @@ export default {
               position.coords.longitude
             )
             .then(async (result) => {
-              this.weather = await this.$store.dispatch({type: 'setWather', result})
+              this.weather = await this.$store.dispatch({type: 'setWather',result: result.data})
               let selectedCity = result.data.LocalizedName;
               this.selectedCity = await this.$store.dispatch({type: 'setSelectedCity', selectedCity})
               this.weatherByDefaultValue();         
@@ -113,13 +112,12 @@ export default {
       }
     },
 
-    async weatherForecastBySearch() {
+    async getWeatherForecast() {
       try {
         this.weatherForecasts = await this.$store.dispatch({
           type: "getWeatherForecast",
-          cityCode: this.weatherByLoc.Key
+          cityCode: this.weather.Key
         });
-        storageService.saveToStorage('forecast', this.weatherForecasts)
       } catch (err) {
         console.log("error has accure err:", err);
       }
@@ -131,19 +129,21 @@ export default {
       } catch (err) {
         console.log("error has accure err:", err);
       }
-      this.weatherForecastByDefault();
+      this.getWeatherForecast();
     },
 
     async weatherBySearchValue() {
-      this.selectedCity = this.searchWether[0].LocalizedName;
+      const result = this.searchWether[0]
+      this.selectedCity = result.LocalizedName;
+      await this.$store.dispatch({type: 'setSelectedCity', selectedCity: this.selectedCity})
       try {
-        const weatherByCity = await this.$store.dispatch({type: 'getWeatherCityByCode', cityCode: this.searchWether[0].Key})
-        storageService.saveToStorage('weatherByCity', weatherByCity);
+        console.log(result)
+        this.weather = await this.$store.dispatch({type: 'setWather', result})
+        this.weatherByCode = await this.$store.dispatch({type: 'getWeatherCityByCode', cityCode: this.weather.Key})
       } catch (err) {
         console.log("error has accure err:", err);
       }
-      storageService.saveToStorage('selectedCity', this.selectedCity)
-      this.weatherForecastBySearch();
+      this.getWeatherForecast();
     },
 
     async autoCompleteOptions() {
@@ -152,7 +152,6 @@ export default {
         this.searchWether.forEach(data => {
           this.data.push(data.LocalizedName);
         });
-        storageService.saveToStorage('data', this.searchWether)
       } catch (err) {
         console.log("error has accure:", err);
       }
@@ -174,10 +173,6 @@ export default {
     favorites() {
       return this.$store.getters.getFavorites
     },
-
-    // weather() {
-    //   return this.$store.getters.getWeather
-    // }
   },
 
   components: {

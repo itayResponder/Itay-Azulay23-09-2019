@@ -46,13 +46,6 @@ export default {
             isLiked: null
         };
     },
-    created() {
-      console.log('dailyWeatBox created weather:', this.weather)
-      if(!this.favorites.length) {
-        console.log(this.favorites)
-
-      }
-    },
 
     methods: {
         likedClicked() {
@@ -75,7 +68,6 @@ export default {
 
     computed: {
         getWeatherIcon() {
-          console.log('computed weather:', this.weather)
             return `https://www.accuweather.com/images/weathericons/${this.weather[0].WeatherIcon}.svg`
         },
 
