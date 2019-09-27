@@ -1,0 +1,32 @@
+.top-navbar ul {
+    top:0;
+    position: fixed;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(41, 40, 40, 0.829);
+}
+
+.top-navbar ul li {
+    float: left
+}
+
+.top-navbar li a:hover {
+    transition: 0.3s;
+    background-color: #858585;
+    box-shadow: 0 0 7px 1px rgb(77, 76, 76);
+}
+
+.top-navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.router-link-exact-active {
+    background-color: #9b9b9b;
+}

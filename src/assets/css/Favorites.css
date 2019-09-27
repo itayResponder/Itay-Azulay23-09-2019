@@ -1,0 +1,13 @@
+.favorites {
+    margin-top: 50px;
+    padding: .3rem 1rem;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+}
+
+.card-wrapper {
+    flex-direction: row;
+    width: 200px;
+    margin-left: 10px;
+}

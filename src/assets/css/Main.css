@@ -1,0 +1,10 @@
+@import 'Home.css';
+@import 'MyHeader.css';
+@import 'Weather.css';
+@import 'Favorites.css';
+@import 'FavoritesCities.css';
+
+body {
+    margin: 0;
+    padding: 0;
+}
