@@ -4,13 +4,10 @@ import {storageService}  from '@/services/storage.service.js';
 export default {
     state: {
         forecast: [],
-        favorites: [],
+        favorites: storageService.loadFromStorage('favorites'),
         weather: [],
         selectedCity: '',
         dataFromService: [],
-        weatherSelectedCity: storageService.loadFromStorage('selectedCity'),
-        weatherByLoc: storageService.loadFromStorage('weatherByLoc'),
-        defaultWatherLoc: storageService.loadFromStorage('defaultWeatherLoc')
     },
     mutations: {
         setWather(state, context) {
@@ -18,9 +15,6 @@ export default {
         },
         setDataFromServer(state, context) {
             state.dataFromService = context.dataFromService.data;
-        },
-        setWeatherByCity(state, context) {
-            state.weatherSelectedCity = context.weatherData.data;
         },
         removeFavorite({favorites}, {likedLoc}) {
             favorites.splice(likedLoc, 1);
@@ -42,9 +36,6 @@ export default {
         getWeather({weather}) {
             return weather;
         },
-        getDefaultWatherLoc({DefaultWatherLoc}) {
-            return DefaultWatherLoc;
-        },
         getDataFromServer({dataFromService}) {
             return dataFromService;
         },
@@ -57,15 +48,9 @@ export default {
         getFavorites({favorites}) {
             return favorites;
         },
-        getWeatherByLoc({weatherByLoc}) {
-            return weatherByLoc;
-        },
         getSelectedCity({selectedCity}) {
             return selectedCity;
         },
-        getForecast({forecast}) {
-            return forecast;
-        }
     },
 
     actions: {
@@ -91,8 +76,6 @@ export default {
         },
 
         async setWather({commit}, {result}) {
-            // const weather = result.data
-            console.log('store: weather', result)
             storageService.saveToStorage("currWather", result);
             commit({type: 'setWather', result})
             return result;
@@ -101,8 +84,6 @@ export default {
         async getWeatherCityByCode({commit}, {cityCode}) {
             try {
                 const weatherData = await geocodeService.getWeatherCity(cityCode)
-                commit({type: 'setWeatherByCity', weatherData})
-                storageService.saveToStorage('weatherByCity', weatherData.data);
                 return weatherData.data;
             } catch (err) {
                 console.log('weatherStore weather error:',err)

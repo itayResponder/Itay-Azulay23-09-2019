@@ -22,6 +22,7 @@
         @emitNewFavoritesLiked="emitNewFavoritesLiked"
         @emitLikedLoc="emitLikedLoc"
         :weather="weatherByCode"
+        :weatherKey="weather.Key"
         :selectedCity="selectedCity"
         :favorites="favorites"
       ></daily-weather-box>
@@ -55,7 +56,17 @@ export default {
       weatherByCode: null
     };
   },
-  created() {
+  async created() {
+    this.favorites = this.$store.getters.getFavorites;
+    if(this.$route.params.id) {
+      const favorites = storageService.loadFromStorage('favorites')
+      const favorite = favorites.find(favorite => {
+        return favorite.Key === this.$route.params.id;
+      })
+      this.weather = favorite
+      this.weatherByDefaultValue();
+      this.selectedCity = favorite.city;
+    }
     if (!this.weather) {
       try {
         navigator.geolocation.getCurrentPosition(position => {
@@ -137,7 +148,6 @@ export default {
       this.selectedCity = result.LocalizedName;
       await this.$store.dispatch({type: 'setSelectedCity', selectedCity: this.selectedCity})
       try {
-        console.log(result)
         this.weather = await this.$store.dispatch({type: 'setWather', result})
         this.weatherByCode = await this.$store.dispatch({type: 'getWeatherCityByCode', cityCode: this.weather.Key})
       } catch (err) {
@@ -170,9 +180,9 @@ export default {
       });
     },
 
-    favorites() {
-      return this.$store.getters.getFavorites
-    },
+    // favorites() {
+    //   return this.$store.getters.getFavorites
+    // },
   },
 
   components: {

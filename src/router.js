@@ -9,7 +9,7 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    {path: '/', name: 'home', component: Home},
-    {path: '/favorites', name: 'favorites', component: Favorites}
+    {path: '/favorites', name: 'favorites', component: Favorites},
+    {path: '/:id?', name: 'home', component: Home},
   ]
 })

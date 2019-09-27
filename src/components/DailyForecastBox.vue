@@ -20,13 +20,6 @@
 export default {
     name: 'dailyForecastBox',
     props: ['forecast'],
-    data() {
-        return {
-
-        }
-    },
-created() {
-},
     computed: {
         getWeatherIcon() {
             return `https://www.accuweather.com/images/weathericons/${this.forecast.Day.Icon}.svg`

@@ -1,5 +1,5 @@
 <template>
-  <div class="card card-wrapper">
+  <div class="card card-wrapper" @click="favoriteClicked">
     <div class="card-content">
       <p class="title">{{favorite.city}}</p>
       <p
@@ -17,6 +17,16 @@ export default {
   props: ["favorite"],
   data() {
     return {};
+  },
+  methods: {
+    favoriteClicked() {
+      this.$router.push(`/${this.favorite.Key}`)
+    }
+  },
+  computed: {
+    favorites() {
+      return this.$store.getters.getFavorites;
+    }
   }
 };
 </script>
