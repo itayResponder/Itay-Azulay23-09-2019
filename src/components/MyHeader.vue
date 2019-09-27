@@ -15,5 +15,7 @@
 
 <script>
 import MyHeader from "../assets/css/MyHeader.css";
-export default {};
+export default {
+
+};
 </script>

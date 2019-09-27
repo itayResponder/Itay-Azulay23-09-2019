@@ -27,7 +27,9 @@
         <span>{{weather[0].WeatherText}}</span>
       </p>
       <p class="card-footer-item">
-        <span>{{parseInt(weather[0].Temperature.Metric.Value)}}&deg{{weather[0].Temperature.Metric.Unit}}</span>
+        <span v-if="toggle==='Metric'">{{parseInt(weather[0].Temperature.Metric.Value)}}&deg{{weather[0].Temperature.Metric.Unit}}</span>
+        <span v-else>{{parseInt(weather[0].Temperature.Imperial.Value)}}&deg{{weather[0].Temperature.Imperial.Unit}}</span>
+
       </p>
     </footer>
   </div>
@@ -36,7 +38,10 @@
 <script>
 export default {
   name: "dailyWeatherBox",
-  props: ["weather", "selectedCity", "favorites", "weatherKey"],
+  props: ["weather", "selectedCity", "favorites", "weatherKey","toggleDegree"],
+  created() {
+    
+  },
   methods: {
     likedClicked() {
       let foundLikedFavoriteIdx = this.favorites.findIndex(likedFavorite => {
@@ -64,6 +69,9 @@ export default {
       return this.favorites.find(
         likedLoc => likedLoc.city === this.selectedCity
       );
+    },
+    toggle() {
+      return this.$store.getters.getToggleDegree
     }
   }
 };

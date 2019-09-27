@@ -8,6 +8,7 @@ export default {
         weather: [],
         selectedCity: '',
         dataFromService: [],
+        toggleDegree: null
     },
     mutations: {
         setWather(state, context) {
@@ -28,7 +29,10 @@ export default {
             state.selectedCity = context.selectedCity;
         },
         setForecast(state, context) {
-            state.forecast = context.dailyForecast
+            state.forecast = context.dailyForecast;
+        },
+        setToggleDegree(state, context) {
+            state.toggleDegree = context.toggleValue;
         }
     },
 
@@ -51,6 +55,9 @@ export default {
         getSelectedCity({selectedCity}) {
             return selectedCity;
         },
+        getToggleDegree({toggleDegree}) {
+            return toggleDegree;
+        }
     },
 
     actions: {
@@ -119,6 +126,14 @@ export default {
             } catch(err) {
                 console.log('weatherStore err:', err)
                 return err;
+            }
+        },
+
+        async toggleDegree({commit}, {toggleValue}) {
+            try {
+                commit({type: 'setToggleDegree', toggleValue})
+            } catch (err) {
+                console.log('weatherStore toggleDegre error:', err)
             }
         }
     }

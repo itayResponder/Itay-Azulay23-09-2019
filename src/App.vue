@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-    <my-header/>
+    <my-header />
     <router-view />
+    <div class="field">
+      <b-switch @input="changeToggle" v-model="isSwitchedCustom" true-value="Metric" false-value="Imperial">{{ isSwitchedCustom }}</b-switch>
+    </div>
   </div>
 </template>
 
@@ -9,8 +12,19 @@
 import MyHeader from "@/components/MyHeader.vue";
 import Main from "@/assets/css/Main.css";
 export default {
+  data() {
+    return {
+      isSwitched: false,
+      isSwitchedCustom: "Metric"
+    };
+  },
+  methods: {
+    async changeToggle() {
+      await this.$store.dispatch({type: 'toggleDegree', toggleValue: this.isSwitchedCustom})
+    }
+  },
   components: {
-    MyHeader,
+    MyHeader
   }
 };
 </script>

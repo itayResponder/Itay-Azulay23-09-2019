@@ -21,6 +21,7 @@
       <daily-weather-box v-if="weatherByCode"
         @emitNewFavoritesLiked="emitNewFavoritesLiked"
         @emitLikedLoc="emitLikedLoc"
+        :toggleDegree="toggleDegree"
         :weather="weatherByCode"
         :weatherKey="weather.Key"
         :selectedCity="selectedCity"
@@ -29,6 +30,7 @@
     </section>
     <section class="wrapper forecast">
       <daily-forecast-box 
+        :toggleDegree="toggleDegree"
         v-for="forecast in weatherForecasts"
         :key="forecast.id"
         :forecast="forecast"
@@ -53,7 +55,8 @@ export default {
       selectedCity: '',
       weatherForecasts: [],
       searchWether: null,
-      weatherByCode: null
+      weatherByCode: null,
+      toggleDegree: this.$store.getters.getToggleDegree
     };
   },
   async created() {
@@ -86,8 +89,6 @@ export default {
         console.log('Could not get coords err:',err);
       }
     }
-  },
-  mounted() {
   },
   methods: {
     checkEnglishLetters(ev) {
@@ -179,7 +180,6 @@ export default {
         );
       });
     },
-
     // favorites() {
     //   return this.$store.getters.getFavorites
     // },

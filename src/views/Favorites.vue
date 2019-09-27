@@ -2,6 +2,7 @@
   <div class="favorites">
     <favorites-cities
     v-for="favorite in favorites" :key="favorite.id" :favorite="favorite"
+    :toggleDegree="toggleDegree"
     ></favorites-cities>
   </div>
 </template>
@@ -13,6 +14,7 @@ export default {
   data() {
     return {
       favorites: this.$store.getters.getFavorites,
+      toggleDegree: this.$store.getters.getToggleDegree
     }
   },
   components: {

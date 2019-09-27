@@ -9,7 +9,13 @@
       <div class="media">
         <div class="media-content">
           <p class="title is-4">{{ forecast.EpochDate | moment("ddd, MMMM Do YYYY") }}</p>
-          <p class="subtitle is-6">{{ parseInt(forecast.Temperature.Maximum.Value)}}&deg {{forecast.Temperature.Maximum.Unit}}</p>
+          <p
+            v-if="toggle==='Metric'"
+            class="subtitle is-6"
+          >{{ parseInt(forecast.Temperature.Maximum.Value)}}&deg {{forecast.Temperature.Maximum.Unit}}</p>
+          <p v-else
+            class="subtitle is-6"
+          >{{ parseInt(forecast.Temperature.Maximum.Value*1.8 +32)}}&deg {{'F'}}</p>
         </div>
       </div>
     </div>
@@ -18,12 +24,15 @@
 
 <script>
 export default {
-    name: 'dailyForecastBox',
-    props: ['forecast'],
-    computed: {
-        getWeatherIcon() {
-            return `https://www.accuweather.com/images/weathericons/${this.forecast.Day.Icon}.svg`
-        }
+  name: "dailyForecastBox",
+  props: ["forecast", "toggleDegree"],
+  computed: {
+    getWeatherIcon() {
+      return `https://www.accuweather.com/images/weathericons/${this.forecast.Day.Icon}.svg`;
+    },
+    toggle() {
+      return this.$store.getters.getToggleDegree;
     }
-}
+  }
+};
 </script>
