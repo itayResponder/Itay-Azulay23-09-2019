@@ -12,10 +12,10 @@
           <p
             v-if="toggle==='Metric'"
             class="subtitle is-6"
-          >{{ parseInt(forecast.Temperature.Maximum.Value)}}&deg {{forecast.Temperature.Maximum.Unit}}</p>
+          >{{ parseInt(forecast.Temperature.Maximum.Value)}}deg {{forecast.Temperature.Maximum.Unit}}</p>
           <p v-else
             class="subtitle is-6"
-          >{{ parseInt(forecast.Temperature.Maximum.Value*1.8 +32)}}&deg {{'F'}}</p>
+          >{{ parseInt(forecast.Temperature.Maximum.Value*1.8 +32)}}deg {{'F'}}</p>
         </div>
       </div>
     </div>
