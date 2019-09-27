@@ -45,6 +45,7 @@ import DailyForecastBox from "@/components/DailyForecastBox.vue";
 import DailyWeatherBox from "@/components/DailyWeatherBox.vue";
 import { storageService } from "@/services/storage.service.js";
 import geocodeService from "@/services/geocode.service";
+import Swal from "sweetalert2";
 export default {
   name: "home",
   data() {
@@ -86,7 +87,7 @@ export default {
             });
         });
       } catch (err) {
-        console.log('Could not get coords err:',err);
+        await Swal.fire('Sorry','Could not get coords', err)
       }
     }
   },
@@ -101,7 +102,7 @@ export default {
       try {
         return await this.$store.dispatch({ type: "addFavorite", likedFavorite });
       } catch (err) {
-        console.log("emitNewFavoritesLiked err:", err);
+        await Swal.fire('Sorry','Could not add favorite', err)
       }
     },
 
@@ -109,7 +110,7 @@ export default {
       try {
         return await this.$store.dispatch({ type: "removeLikedLoc", likedLoc });
       } catch (err) {
-        console.log("Could not remove likedLoc err:", err);
+        await Swal.fire('Sorry','Could not remove favorite', err)
       }
     },
 
@@ -120,7 +121,7 @@ export default {
           cityCode: this.weather.Key
         });
       } catch (err) {
-        console.log("error has accure err:", err);
+        await Swal.fire('Sorry','Could not get weather Forecast', err)
       }
     },
 
@@ -131,7 +132,7 @@ export default {
           cityCode: this.weather.Key
         });
       } catch (err) {
-        console.log("error has accure err:", err);
+        await Swal.fire('Sorry','Could not get weather Forecast', err)
       }
     },
 
@@ -139,7 +140,7 @@ export default {
       try {
         this.weatherByCode = await this.$store.dispatch({type: 'getWeatherCityByCode', cityCode: this.weather.Key})
       } catch (err) {
-        console.log("error has accure err:", err);
+        await Swal.fire('Sorry','Could not get weather By City Code', err)
       }
       this.getWeatherForecast();
     },
@@ -152,7 +153,7 @@ export default {
         this.weather = await this.$store.dispatch({type: 'setWather', result})
         this.weatherByCode = await this.$store.dispatch({type: 'getWeatherCityByCode', cityCode: this.weather.Key})
       } catch (err) {
-        console.log("error has accure err:", err);
+        await Swal.fire('Sorry','Could not get weather by Search value', err)
       }
       this.getWeatherForecast();
     },
@@ -164,7 +165,7 @@ export default {
           this.data.push(data.LocalizedName);
         });
       } catch (err) {
-        console.log("error has accure:", err);
+        await Swal.fire('Sorry','Could not get auto Complete searches', err)
       }
     }
   },

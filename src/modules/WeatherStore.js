@@ -67,7 +67,6 @@ export default {
                 commit({type: 'setDataFromServer', dataFromService})
                 return dataFromService.data;
             } catch (err) {
-                console.log('weatherStore error:',err)
                 return err;
             }
         },
@@ -78,14 +77,18 @@ export default {
                 commit({type: 'setSelectedCity', selectedCity})
                 return selectedCity;
             } catch (err) {
-                console.log('error with selectedCity:', err)
+                return err;
             }
         },
 
         async setWather({commit}, {result}) {
-            storageService.saveToStorage("currWather", result);
-            commit({type: 'setWather', result})
-            return result;
+            try {
+                storageService.saveToStorage("currWather", result);
+                commit({type: 'setWather', result})
+                return result;
+            } catch (err) {
+                return err;
+            }
         },
 
         async getWeatherCityByCode({commit}, {cityCode}) {
@@ -93,7 +96,6 @@ export default {
                 const weatherData = await geocodeService.getWeatherCity(cityCode)
                 return weatherData.data;
             } catch (err) {
-                console.log('weatherStore weather error:',err)
                 return err;
             }
         },
@@ -106,7 +108,6 @@ export default {
             commit({type: 'setForecast', dailyForecast})
             return dailyForecast;
             } catch (err) {
-                console.log('weatherStore forcast error:',err)
                 return err;
             }
         },
@@ -115,7 +116,6 @@ export default {
             try {
                 commit({type: 'removeFavorite', likedLoc})
             } catch (err) {
-                console.log('weatherstore err:', err)
                 return err;
             }
         },
@@ -124,7 +124,6 @@ export default {
             try {
                 commit({type: 'addFavorite', likedFavorite})
             } catch(err) {
-                console.log('weatherStore err:', err)
                 return err;
             }
         },
@@ -133,7 +132,7 @@ export default {
             try {
                 commit({type: 'setToggleDegree', toggleValue})
             } catch (err) {
-                console.log('weatherStore toggleDegre error:', err)
+                return err;
             }
         }
     }
