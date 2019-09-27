@@ -2,7 +2,7 @@
   <div id="app">
     <my-header />
     <router-view />
-    <div class="field">
+    <div class="field toggleButton">
       <b-switch @input="changeToggle" v-model="isSwitchedCustom" true-value="Metric" false-value="Imperial">{{ isSwitchedCustom }}</b-switch>
     </div>
   </div>
@@ -35,5 +35,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+@media only screen and (max-width: 400px) {
+  .toggleButton {
+    position: fixed;
+    top:100px;
+    right:150px;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="weather" class="card card-weather">
+  <div v-if="weather" class="card card-wrapper daily-weather">
     <div class="card-image">
       <figure class="image is-0by1">
         <img :src="getWeatherIcon" alt="Placeholder image" />

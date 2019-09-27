@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card forecast-wrapper">
     <div class="card-image">
       <figure class="image is-0by1">
         <img :src="getWeatherIcon" alt="Placeholder image" />
