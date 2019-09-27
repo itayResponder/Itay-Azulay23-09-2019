@@ -18,16 +18,16 @@
       <b-button @click="weatherBySearchValue" type="is-info" class="search-button" rounded>Search</b-button>
     </b-field>
     <section class="wrapper weather-city">
-      <daily-weather-box
+      <daily-weather-box v-if="weatherByCode"
         @emitNewFavoritesLiked="emitNewFavoritesLiked"
         @emitLikedLoc="emitLikedLoc"
-        :weather="weather"
+        :weather="weatherByCode"
         :selectedCity="selectedCity"
         :favorites="favorites"
       ></daily-weather-box>
     </section>
     <section class="wrapper forecast">
-      <daily-forecast-box
+      <daily-forecast-box 
         v-for="forecast in weatherForecasts"
         :key="forecast.id"
         :forecast="forecast"
@@ -49,10 +49,11 @@ export default {
       search: '',
       data: [],
       weatherByLoc: storageService.loadFromStorage("weatherByLoc"),
-      weather: storageService.loadFromStorage('weatherByCity'),
-      selectedCity: storageService.loadFromStorage('selectedCity'),
-      weatherForecasts: storageService.loadFromStorage("forecast"),
+      weather: null,
+      selectedCity: '',
+      weatherForecasts: [],
       searchWether: null,
+      weatherByCode: null
     };
   },
   created() {
@@ -64,20 +65,20 @@ export default {
               position.coords.latitude,
               position.coords.longitude
             )
-            .then(result => {
-              this.weather = result.data;
-              this.selectedCity = this.weather.LocalizedName;
-              this.weatherByDefaultValue();
-              storageService.saveToStorage("defaultWeatherLoc", this.weather);
-              storageService.saveToStorage("selectedCity", this.selectedCity);
+            .then(async (result) => {
+              this.weather = await this.$store.dispatch({type: 'setWather', result})
+              let selectedCity = result.data.LocalizedName;
+              this.selectedCity = await this.$store.dispatch({type: 'setSelectedCity', selectedCity})
+              this.weatherByDefaultValue();         
             });
         });
       } catch (err) {
-        console.log(err);
+        console.log('Could not get coords err:',err);
       }
     }
   },
-
+  mounted() {
+  },
   methods: {
     checkEnglishLetters(ev) {
       if (!/^[a-zA-Z ]+$/.test(ev.key)) {
@@ -107,7 +108,6 @@ export default {
           type: "getWeatherForecast",
           cityCode: this.weather.Key
         });
-        storageService.saveToStorage('forecast', this.weatherForecasts)
       } catch (err) {
         console.log("error has accure err:", err);
       }
@@ -126,13 +126,11 @@ export default {
     },
 
     async weatherByDefaultValue() {
-      this.selectedCity = this.weather.LocalizedName;
       try {
-        const weatherByCity = await this.$store.dispatch({type: 'getWeatherCityByCode', cityCode: this.weather.Key})
+        this.weatherByCode = await this.$store.dispatch({type: 'getWeatherCityByCode', cityCode: this.weather.Key})
       } catch (err) {
         console.log("error has accure err:", err);
       }
-      storageService.saveToStorage('selectedCity', this.selectedCity)
       this.weatherForecastByDefault();
     },
 
@@ -177,9 +175,9 @@ export default {
       return this.$store.getters.getFavorites
     },
 
-    WeatherCity() {
-      return this.$store.getters.getWeatherCity
-    }
+    // weather() {
+    //   return this.$store.getters.getWeather
+    // }
   },
 
   components: {

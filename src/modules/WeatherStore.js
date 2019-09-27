@@ -5,14 +5,16 @@ export default {
     state: {
         forecast: [],
         favorites: [],
+        weather: [],
+        selectedCity: '',
         dataFromService: [],
         weatherSelectedCity: storageService.loadFromStorage('selectedCity'),
         weatherByLoc: storageService.loadFromStorage('weatherByLoc'),
         defaultWatherLoc: storageService.loadFromStorage('defaultWeatherLoc')
     },
     mutations: {
-        setDefaultWatherLoc(state, context) {
-            state.defaultWatherLoc =  context.result
+        setWather(state, context) {
+            state.weather =  context.result
         },
         setDataFromServer(state, context) {
             state.dataFromService = context.dataFromService.data;
@@ -27,10 +29,19 @@ export default {
         addFavorite({favorites}, {likedFavorite}) {
             favorites.push(likedFavorite);
             storageService.saveToStorage('favorites', favorites);
+        },
+        setSelectedCity(state, context) {
+            state.selectedCity = context.selectedCity;
+        },
+        setForecast(state, context) {
+            state.forecast = context.dailyForecast
         }
     },
 
     getters: {
+        getWeather({weather}) {
+            return weather;
+        },
         getDefaultWatherLoc({DefaultWatherLoc}) {
             return DefaultWatherLoc;
         },
@@ -48,6 +59,12 @@ export default {
         },
         getWeatherByLoc({weatherByLoc}) {
             return weatherByLoc;
+        },
+        getSelectedCity({selectedCity}) {
+            return selectedCity;
+        },
+        getForecast({forecast}) {
+            return forecast;
         }
     },
 
@@ -63,8 +80,22 @@ export default {
             }
         },
 
-        async setDefaultWatherLoc({commit}, {result}) {
-            commit({type: 'setDefaultWatherLoc', result})
+        async setSelectedCity({commit}, {selectedCity}) {
+            try {
+                storageService.saveToStorage('selectedCity', selectedCity)
+                commit({type: 'setSelectedCity', selectedCity})
+                return selectedCity;
+            } catch (err) {
+                console.log('error with selectedCity:', err)
+            }
+        },
+
+        async setWather({commit}, {result}) {
+            const weather = result.data
+            console.log('setWEather:', weather)
+            storageService.saveToStorage("currWather", weather);
+            commit({type: 'setWather', weather})
+            return weather;
         },
 
         async getWeatherCityByCode({commit}, {cityCode}) {
@@ -82,7 +113,10 @@ export default {
         async getWeatherForecast({commit}, {cityCode}) {
             try {
             const weatherForecast = await geocodeService.getWeatherForecast(cityCode)
-            return weatherForecast.data.DailyForecasts;
+            storageService.saveToStorage('forecast', weatherForecast.data.DailyForecasts)
+            const dailyForecast = weatherForecast.data.DailyForecasts
+            commit({type: 'setForecast', dailyForecast})
+            return dailyForecast;
             } catch (err) {
                 console.log('weatherStore forcast error:',err)
                 return err;

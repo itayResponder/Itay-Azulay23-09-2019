@@ -1,5 +1,5 @@
 import Axios from 'axios';
-const API_KEY = '2f9iJlU9fWif9MoKnya0E3ayfFehYOYg';
+const API_KEY = 'bUffsUoi4HGfAeHL8BLEhKtG00j9u2AW';
 
 export default {
     getAutoComplete,
