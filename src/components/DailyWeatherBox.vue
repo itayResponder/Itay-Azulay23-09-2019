@@ -27,8 +27,8 @@
         <span>{{weather[0].WeatherText}}</span>
       </p>
       <p class="card-footer-item">
-        <span v-if="toggle==='Metric'">{{parseInt(weather[0].Temperature.Metric.Value)}}deg{{weather[0].Temperature.Metric.Unit}}</span>
-        <span v-else>{{parseInt(weather[0].Temperature.Imperial.Value)}}deg{{weather[0].Temperature.Imperial.Unit}}</span>
+        <span v-if="toggle==='Metric'">{{parseInt(weather[0].Temperature.Metric.Value)}}&deg{{weather[0].Temperature.Metric.Unit}}</span>
+        <span v-else>{{parseInt(weather[0].Temperature.Imperial.Value)}}&deg{{weather[0].Temperature.Imperial.Unit}}</span>
 
       </p>
     </footer>
