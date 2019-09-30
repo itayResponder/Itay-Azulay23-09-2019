@@ -14,8 +14,7 @@ import Main from "@/assets/css/Main.css";
 export default {
   data() {
     return {
-      isSwitched: false,
-      isSwitchedCustom: "Metric"
+      isSwitchedCustom: 'Metric'
     };
   },
   methods: {

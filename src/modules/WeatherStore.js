@@ -4,11 +4,11 @@ import {storageService}  from '@/services/storage.service.js';
 export default {
     state: {
         forecast: [],
-        favorites: storageService.loadFromStorage('favorites'),
+        favorites: storageService.loadFromStorage('favorites') || [],
         weather: [],
         selectedCity: '',
         dataFromService: [],
-        toggleDegree: null
+        toggleDegree: 'Metric'
     },
     mutations: {
         setWather(state, context) {
